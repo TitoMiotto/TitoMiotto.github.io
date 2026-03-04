@@ -1,0 +1,10 @@
+<div className="h-screen grid grid-cols-[2fr_1fr] grid-rows-[100px_1fr_100px] gap-4">
+    <div className="bg-red-400"></div>
+    <div className="bg-blue-400"></div>
+    <div className="bg-green-400"></div>
+    <div className="bg-yellow-400"></div>
+    <div className="bg-black"></div>
+
+</div>
+
+solamente funciona bien en pantallas de computadora

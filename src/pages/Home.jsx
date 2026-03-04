@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import malditoImg from '../assets/image.png'
 
 function ExpandableAbout({ title, text, foot, image }) {
   const [open, setOpen] = useState(false);
@@ -124,6 +125,21 @@ export default function Home() {
             text="Aplicación independiente diseñada para simplificar la gestión de pedidos en restaurantes. Olvídate del papel y los errores. Controla las comandas, sigue el estado de cada pedido en tiempo real y mejora la comunicación entre el salón y la cocina, todo desde una interfaz clara y fácil de usar. La solución perfecta para poner el foco en lo que importa: la comida y el cliente."
             foot=" Este proyecto de desarrollo independiente consiste en la creación de una aplicación web/móvil diseñada específicamente para optimizar la gestión de pedidos en un local de comida. La aplicación aborda los desafíos comunes de la operación diaria, como la lentitud en la toma de pedidos, los errores de comunicación en cocina y la dificultad para llevar un control del estado de cada comanda. Su objetivo es digitalizar y agilizar el flujo de trabajo desde que el cliente realiza el pedido hasta que este es entregado, mejorando la eficiencia del personal y la experiencia del cliente."
             image="../Assets/react.svg"
+        />
+        </section>
+        <section className="mt-10 max-w-4xl space-y-4">
+            <ExpandableAbout
+            title="MalditoClub"
+            text="Plataforma digital construida desde cero para Maldito Club, un proyecto radiofónico que buscaba un hogar en internet. lo ideamos junto a los chicos de maldito club que necesitaban entralizar toda su información, noticias y novedades en un solo espacio, creando un ecosistema digital. Esta es la solución perfecta para ordenar el caos creativo y conectar con su audiencia de manera directa y auténtica."
+            foot={
+                <div>
+                    <a href="/malditoClub" target="_blank" rel="noopener noreferrer" 
+                      className="text-blue-500 hover:underline mt-2 inline-block">
+                        Inicio del desarrollo: 19/2/2026
+                    </a>
+                </div>
+            }
+            image={malditoImg}
         />
         </section>
         <section className="mt-10 max-w-4xl space-y-4">

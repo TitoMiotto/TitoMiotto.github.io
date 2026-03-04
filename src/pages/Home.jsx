@@ -133,7 +133,7 @@ export default function Home() {
             text="Plataforma digital construida desde cero para Maldito Club, un proyecto radiofónico que buscaba un hogar en internet. lo ideamos junto a los chicos de maldito club que necesitaban entralizar toda su información, noticias y novedades en un solo espacio, creando un ecosistema digital. Esta es la solución perfecta para ordenar el caos creativo y conectar con su audiencia de manera directa y auténtica."
             foot={
                 <div>
-                    <a href="/malditoClub" target="_blank" rel="noopener noreferrer" 
+                    <a href="/#/malditoClub" target="_blank" rel="noopener noreferrer" 
                       className="text-blue-500 hover:underline mt-2 inline-block">
                         Inicio del desarrollo: 19/2/2026
                     </a>

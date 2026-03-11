@@ -6,6 +6,7 @@ import {
 
 
 import MalditoClub from "./pages/malditoClub.jsx";
+import MalditoClubEstandar from "./pages/malditoClubEstandar.jsx";
 import Home from "./pages/Home.jsx";
 
 
@@ -14,6 +15,7 @@ function App() {
     <Router>
       <div>
         <Routes>
+          <Route path="/malditoClub2" element={<MalditoClubEstandar />} />
           <Route path="/malditoClub" element={<MalditoClub />} />
           <Route path="/" element={<Home />} />
         </Routes>

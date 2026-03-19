@@ -4,7 +4,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'deuschtlander': ['Deuschtlander', 'serif'],
+        'altehaas': ['Alte Haas Grotesk', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
+

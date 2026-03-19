@@ -10,13 +10,13 @@ import MalditoClubEstandar from "./pages/malditoClubEstandar.jsx";
 import Home from "./pages/Home.jsx";
 
 
-function App() {
+function App() { 
   return (
     <Router>
       <div>
         <Routes>
-          <Route path="/malditoClub2" element={<MalditoClubEstandar />} />
-          <Route path="/malditoClub" element={<MalditoClub />} />
+          <Route path="/malditoClub" element={<MalditoClubEstandar />} />
+          <Route path="/malditoClub2" element={<MalditoClub />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>

@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 
 
+import NoticiaPrincipal from "./pages/noticiaPrincipal.jsx";
 import MalditoClub from "./pages/malditoClub.jsx";
 import MalditoClubEstandar from "./pages/malditoClubEstandar.jsx";
 import Home from "./pages/Home.jsx";
@@ -16,6 +17,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/malditoClub" element={<MalditoClubEstandar />} />
+          <Route path="/noticia/:id" element={<NoticiaPrincipal />} />
           <Route path="/malditoClub2" element={<MalditoClub />} />
           <Route path="/" element={<Home />} />
         </Routes>

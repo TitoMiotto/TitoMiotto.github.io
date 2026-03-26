@@ -1,6 +1,6 @@
-import logoTikTok from "../assets/tiktok.png";
-import logoInstagram from "../assets/instagram.png";
-import logoYoutube from "../assets/youtube.png";
+import logoTikTok from "/assets/iconTiktokWhite.jpg";
+import logoInstagram from "/assets/iconInstaWhite.jpg";
+import logoYoutube from "/assets/iconYouWhite.jpg";
 
 
 export const Etiqueta = [
@@ -24,7 +24,13 @@ export const Noticias = [
     texto: [
         "NVIDIA ha presentado oficialmente la RTX 5090, su nueva tarjeta gráfica flagship basada en la arquitectura Blackwell. Con 32GB de memoria GDDR7 y un rendimiento hasta 2.5 veces superior a la RTX 4090, promete revolucionar el gaming y la creación de contenido.",
         "La nueva GPU incorpora tecnología DLSS 4 con generación de múltiples fotogramas, permitiendo experiencias de juego en 8K a 240 FPS. Los primeros benchmarks muestran un rendimiento excepcional en tareas de ray tracing y computación IA.",
-        "El lanzamiento está programado para finales de 2024, con un precio que rondaría los $1999 USD para el modelo Founders Edition."
+        "El lanzamiento está programado para finales de 2024, con un precio que rondaría los $1999 USD para el modelo Founders Edition.",
+        "NVIDIA ha presentado oficialmente la RTX 5090, su nueva tarjeta gráfica flagship basada en la arquitectura Blackwell. Con 32GB de memoria GDDR7 y un rendimiento hasta 2.5 veces superior a la RTX 4090, promete revolucionar el gaming y la creación de contenido.",
+        "La nueva GPU incorpora tecnología DLSS 4 con generación de múltiples fotogramas, permitiendo experiencias de juego en 8K a 240 FPS. Los primeros benchmarks muestran un rendimiento excepcional en tareas de ray tracing y computación IA.",
+        "NVIDIA ha presentado oficialmente la RTX 5090, su nueva tarjeta gráfica flagship basada en la arquitectura Blackwell. Con 32GB de memoria GDDR7 y un rendimiento hasta 2.5 veces superior a la RTX 4090, promete revolucionar el gaming y la creación de contenido.",
+        "La nueva GPU incorpora tecnología DLSS 4 con generación de múltiples fotogramas, permitiendo experiencias de juego en 8K a 240 FPS. Los primeros benchmarks muestran un rendimiento excepcional en tareas de ray tracing y computación IA.",
+        "NVIDIA ha presentado oficialmente la RTX 5090, su nueva tarjeta gráfica flagship basada en la arquitectura Blackwell. Con 32GB de memoria GDDR7 y un rendimiento hasta 2.5 veces superior a la RTX 4090, promete revolucionar el gaming y la creación de contenido.",
+        "La nueva GPU incorpora tecnología DLSS 4 con generación de múltiples fotogramas, permitiendo experiencias de juego en 8K a 240 FPS. Los primeros benchmarks muestran un rendimiento excepcional en tareas de ray tracing y computación IA.",
     ],
     etiqueta: 1
   },
@@ -44,7 +50,11 @@ export const Noticias = [
     imagen: "react.svg",
     texto: [
         "Los procesadores AMD Ryzen 9000, basados en la arquitectura Zen 5, están batiendo todos los récords de rendimiento. El modelo flagship Ryzen 9 9950X ofrece 16 núcleos y 32 hilos con frecuencias que alcanzan los 5.7 GHz.",
-        "Las pruebas preliminares muestran una mejora del 25% en rendimiento mononúcleo respecto a la generación anterior, posicionando a AMD como líder indiscutible en el mercado de procesadores de escritorio."
+        "Las pruebas preliminares muestran una mejora del 25% en rendimiento mononúcleo respecto a la generación anterior, posicionando a AMD como líder indiscutible en el mercado de procesadores de escritorio.",
+        "NVIDIA ha presentado oficialmente la RTX 5090, su nueva tarjeta gráfica flagship basada en la arquitectura Blackwell. Con 32GB de memoria GDDR7 y un rendimiento hasta 2.5 veces superior a la RTX 4090, promete revolucionar el gaming y la creación de contenido.",
+        "La nueva GPU incorpora tecnología DLSS 4 con generación de múltiples fotogramas, permitiendo experiencias de juego en 8K a 240 FPS. Los primeros benchmarks muestran un rendimiento excepcional en tareas de ray tracing y computación IA.",
+        "NVIDIA ha presentado oficialmente la RTX 5090, su nueva tarjeta gráfica flagship basada en la arquitectura Blackwell. Con 32GB de memoria GDDR7 y un rendimiento hasta 2.5 veces superior a la RTX 4090, promete revolucionar el gaming y la creación de contenido.",
+        "La nueva GPU incorpora tecnología DLSS 4 con generación de múltiples fotogramas, permitiendo experiencias de juego en 8K a 240 FPS. Los primeros benchmarks muestran un rendimiento excepcional en tareas de ray tracing y computación IA.",
     ],
     etiqueta: 3
   },
@@ -56,7 +66,7 @@ export const Noticias = [
         "Los fabricantes de monitores están llevando la tecnología OLED a nuevos límites con paneles 4K que alcanzan los 240Hz. Esta combinación, hasta ahora imposible, promete la experiencia definitiva tanto para jugadores como para creadores de contenido.",
         "LG y Samsung han anunciado sus primeros modelos con estas características, utilizando nuevas tecnologías de disipación que permiten mantener la calidad de imagen incluso a altas frecuencias de actualización."
     ],
-    etiqueta: 4
+    etiqueta: 3
   },
   { 
     titulo: "SSD PCIE 5.0: VELOCIDADES DE 14GB/s", 
@@ -66,7 +76,7 @@ export const Noticias = [
         "Los nuevos SSD con interfaz PCIe 5.0 están alcanzando velocidades de lectura secuencial de hasta 14GB/s, duplicando el rendimiento de la generación anterior. Esto permitirá cargar juegos de gran tamaño en cuestión de segundos.",
         "Fabricantes como Samsung y WD ya tienen disponibles sus primeros modelos, que incluyen disipadores activos para mantener las temperaturas bajo control durante transferencias intensivas."
     ],
-    etiqueta: 5
+    etiqueta: 1
   },
   { 
     titulo: "NVIDIA REVELA LA RTX 5090: EL FUTURO DEL RENDIMIENTO GRÁFICO", 

@@ -1,6 +1,5 @@
 function Noticia({ 
     titulo = "Título",
-    introduccion = "",
     texto = [],
     imagenSrc = "https://picsum.photos/900/400"
 }) {
@@ -14,7 +13,7 @@ function Noticia({
                 {imagenSrc && <img
                     src={imagenSrc}
                     alt="content visual"
-                    className=" w-full h-auto md:float-right md:h-[45vh] md:w-auto md:max-w-1/2 rounded-lg border border-slate-800
+                    className=" w-full h-auto md:float-right md:h-[45vh] md:w-auto md:max-w-1/2 rounded-lg 
                                 transition-all duration-300"
                         // opcional, para limitar altura
                 /> }

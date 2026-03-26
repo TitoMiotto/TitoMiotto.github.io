@@ -48,42 +48,38 @@ const Banner = () => {
       {/* Contenedor principal con altura responsive */}
       <div className={`
         relative
-        w-full
-        ${isMobile ? 'max-h-[20vh]' : 'max-h-[40vh]'}
+        max-h-[20vh]
+        ${isMobile ? 'w-full' : 'w-3/5'}
         overflow-hidden
+        rounded
       `}>
         
-        {/* Fondo de imagen solo en móvil (cuando está fusionada) */}
-        {isMobile && (
-          <motion.div
-            initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ 
-              scale: imageLoaded ? 1 : 1.1,
-              opacity: imageLoaded ? 0.5 : 0 
-            }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 z-0"
-          >
-            <img
-              src="https://picsum.photos/600/400"
-              alt="fondo"
-              onLoad={() => setImageLoaded(true)}
-              className="w-full h-full object-cover"
-            />
-            {/* Overlay oscuro para mejorar legibilidad del texto */}
-            <div className="absolute inset-0 bg-black/50" />
-          </motion.div>
-        )}
+      {/* Fondo de imagen solo en móvil (cuando está fusionada) */}
+        <motion.div
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ 
+            scale: imageLoaded ? 1 : 1.1,
+            opacity: imageLoaded ? 0.5 : 0 
+          }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 z-0"
+        >
+          <img
+            src="https://picsum.photos/600/400"
+            alt="fondo"
+            onLoad={() => setImageLoaded(true)}
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay oscuro para mejorar legibilidad del texto */}
+          <div className="absolute inset-0 bg-black/50" />
+        </motion.div>
 
         {/* Grid para desktop: texto 30% | imagen 70% */}
         <div className={`
           relative z-10
           grid
           w-full h-full
-          ${isMobile 
-            ? 'grid-cols-1' // En móvil: una sola columna
-            : 'md:grid-cols-[30%_70%]' // En desktop: dos columnas
-          }
+          grid-cols-1
         `}>
           
           {/* TEXTO - siempre visible */}
@@ -91,12 +87,9 @@ const Banner = () => {
             variants={textVariants}
             className={`
               flex flex-col
-              px-6 py-8
-              ${isMobile 
-                ? 'bg-transparent text-white' // En móvil: fondo transparente para ver imagen
-                : 'bg-red-500' // En desktop: fondo rojo original
-              }
-              relative z-20
+              px-6 py-8 
+              bg-transparent text-white
+              relative z-10
             `}
           >
             <div>
@@ -120,36 +113,6 @@ const Banner = () => {
             </div>
           </motion.div>
 
-          {/* IMAGEN - solo visible en desktop */}
-          {!isMobile && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ 
-                opacity: imageLoaded ? 1 : 0,
-                scale: imageLoaded ? 1 : 0.95
-              }}
-              transition={{ duration: 0.8 }}
-              className="relative overflow-hidden h-full"
-            >
-              {/* Skeleton loader mientras carga */}
-              {!imageLoaded && (
-                <div className="h-full w-full bg-gradient-to-r from-gray-700 to-gray-900 animate-pulse" />
-              )}
-              
-              <motion.img
-                src="https://picsum.photos/600/400"
-                alt="content visual"
-                initial={{ scale: 1.1, filter: "blur(10px)" }}
-                animate={{
-                  scale: imageLoaded ? 1 : 1.1,
-                  filter: imageLoaded ? "blur(0px)" : "blur(10px)"
-                }}
-                transition={{ duration: 0.5 }}
-                onLoad={() => setImageLoaded(true)}
-                className="h-full w-full object-cover"
-              />
-            </motion.div>
-          )}
         </div>
       </div>
     </motion.div>

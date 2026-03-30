@@ -2,12 +2,12 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react";
 import { useMotionValueEvent, useMotionValue } from 'framer-motion';
 import { LinksItems, Etiqueta } from "./configuracion";
-
-import logoExtendido from "../assets/logoExtendido.png";
-import logoSmall from "../assets/logoSmall.png";
+import { useNavigate } from 'react-router-dom';
 
 
 function HeaderAnimado() {
+  const navigate = useNavigate();
+
   const { scrollY } = useScroll();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -80,7 +80,7 @@ function HeaderAnimado() {
             onClick={() => setMenuOpen(!menuOpen)}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl z-10 p-1"
             style={{ 
-              opacity: menuOpacity,
+              opacity: 1, // Siempre visible 
               pointerEvents: 'auto' // Asegurar que sea clickeable
             }}
           >
@@ -88,7 +88,7 @@ function HeaderAnimado() {
           </motion.button>
           {/* LOGO ICONO - Para móvil siempre visible, para desktop animado */}
           <motion.img
-            src={logoSmall} 
+            src={"/assets/logoSmall.png"} 
             className={`absolute h-10 w-auto ${isMobile ? ' justify-self-start' : ''}`}
             style={isMobile ? {
               opacity: 1
@@ -111,7 +111,7 @@ function HeaderAnimado() {
                   translateY: "-50%"
                 }}>
               <motion.img
-                src={logoExtendido}
+                src={`/assets/logoExtendido.png`}
                 className="h-16 w-auto"
               />
 
@@ -166,9 +166,11 @@ function HeaderAnimado() {
                 {Etiqueta.map((item) => (
                   <a 
                     key={item.id}
-                    href={item.href} 
                     className="hover:text-red-600 hover:translate-x-1 transition px-2 py-1 text-white"
-                    onClick={() => setMenuOpen(false)} // cerrar menú al hacer click
+                    onClick={() => {
+                      navigate("/etiqueta/" + item.id);
+                      setMenuOpen(false);
+                    }}
                   >
                   {item.name}
                   </a>

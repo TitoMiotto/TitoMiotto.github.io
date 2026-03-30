@@ -3,6 +3,8 @@ import HeaderAnimado from "./headerMC";
 import Body from "./body";
 import Banner from "./banner";
 import Plantilla2noticias from "./plantilla2noticias";
+import { Noticia } from "./noticiaPrincipal";
+import { Noticias } from "./configuracion";
 
 
 const malditoClubEstandar = () => {
@@ -27,8 +29,16 @@ const malditoClubEstandar = () => {
         <div className="relative z-10 text-white">
           <div className="md:w-full md:h-[20vh]"></div>
           <Body/>
+          <div className="md:w-full md:h-[10vh]"></div>
           <Banner/>
           <Plantilla2noticias/>
+          <div className="md:w-full md:h-[10vh]"></div>
+          <Banner/>
+          <Noticia noticia={Noticias[7]} />
+          <Noticia noticia={Noticias[8]} />
+          <Noticia noticia={Noticias[9]} />
+          <Noticia noticia={Noticias[10]} />
+          <div className="md:w-full md:h-[20vh]"></div>
         </div>
       </div>
 

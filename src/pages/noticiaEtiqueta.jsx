@@ -23,6 +23,7 @@ const noticiaEtiqueta = () => {
 
             setTodas(filtradas);
             setPagina(1); // reset al cambiar etiqueta
+            console.log("Noticias filtradas por etiqueta:", etiqueta);
         }
     }, [etiqueta]);
 
@@ -39,7 +40,7 @@ const noticiaEtiqueta = () => {
                 <div className="flex flex-col mb-4 px-7">
                     {noticia.etiqueta && (
                         <span className="text-red-500/70 font-altehaas text-sm">
-                            {`> ${Etiqueta[noticia.etiqueta].name}`}
+                            {`> ${Etiqueta[noticia.etiqueta - 1].name}`}
                         </span>
                     )}
                     <h2 className="text-6xl font-deuschtlander tracking-wide text-white pt-4">

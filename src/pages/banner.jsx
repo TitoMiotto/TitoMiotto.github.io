@@ -43,11 +43,12 @@ const Banner = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="flex flex-col justify-center w-full"
+      className="flex flex-col justify-center items-center w-full"
     >
       {/* Contenedor principal con altura responsive */}
       <div className={`
         relative
+        
         max-h-[20vh]
         ${isMobile ? 'w-full' : 'w-3/5'}
         overflow-hidden

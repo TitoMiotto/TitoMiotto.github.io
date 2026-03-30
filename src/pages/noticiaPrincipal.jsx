@@ -2,23 +2,24 @@ import HeaderAnimado from "./headerMC";
 import { Noticias, Etiqueta } from "./configuracion";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Banner from "./banner";
 
 
 const noticiaPrincipal = () => {
-    const { id } = useParams(); // Obtiene el parámetro de la URL
-    const [noticia, setNoticia] = useState(null);
+    const { id, etiqueta } = useParams(); // Obtiene el parámetro de la URL
+    const [noticias, setNoticias] = useState(null);
     
     useEffect(() => {
-        // Buscar la noticia por ID
-        if (id && Noticias[id]) {
-            setNoticia(Noticias[id]);
+        if (id !== undefined && Noticias.length > 0) {
+            const index = parseInt(id);
+            setNoticias(Noticias.slice(index, index + 8));
         }
     }, [id]);
 
 
-    const Noticia = () => {
+    const Noticia = ({noticia}) => {
         return (
-            <div className="flex flex-col h-auto overflow-hidden">
+            <div className="flex flex-col h-auto overflow-hidden mb-16">
                 {/* Título y etiqueta fuera del flujo de la imagen flotante */}
                 <div className="flex flex-col mb-4 px-7">
                     {noticia.etiqueta && (
@@ -59,7 +60,7 @@ const noticiaPrincipal = () => {
         );
     };
 
-    if (!noticia) {
+    if (!noticias) {
         return <div className="min-h-screen bg-black text-white">Cargando...</div>;
     }
 
@@ -75,9 +76,16 @@ const noticiaPrincipal = () => {
                     }}
                 />
                 <div className="relative z-10 text-white">
-                    <Noticia/>
+                    <Noticia noticia={noticias[0]} />
+                    <Banner/>
+                </div>
+                <div className="relative z-10 text-white gap-16 mt-16 md:px-17 flex flex-col">
+                    {noticias.slice(1).map((n, i) => (
+                        <Noticia key={i} noticia={{ ...n, etiqueta: null }} />
+                    ))}
                 </div>
             </div>
+            
         </div>
     );
 };

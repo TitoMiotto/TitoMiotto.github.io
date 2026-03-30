@@ -13,8 +13,8 @@ function MiniNoticia({
                 {imagenSrc && <img
                     src={imagenSrc}
                     alt="content visual"
-                    className=" w-full h-auto md:w-auto md:max-h-[35vh] mb-2 rounded-lg
-                                object-contain transition-all duration-300 overflow-hidden"
+                    className=" w-full h-auto md:w-auto md:max-h-[33vh] mb-2
+                                object-cover transition-all duration-300 rounded-3xl"
                         // opcional, para limitar altura
                 /> }
 

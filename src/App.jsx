@@ -6,6 +6,7 @@ import {
 
 
 import NoticiaPrincipal from "./pages/noticiaPrincipal.jsx";
+import NoticiaEtiqueta from "./pages/noticiaEtiqueta.jsx";
 import MalditoClub from "./pages/malditoClub.jsx";
 import MalditoClubEstandar from "./pages/malditoClubEstandar.jsx";
 import Home from "./pages/Home.jsx";
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/malditoClub" element={<MalditoClubEstandar />} />
           <Route path="/noticia/:id" element={<NoticiaPrincipal />} />
+          <Route path="/etiqueta/:etiqueta" element={<NoticiaEtiqueta />} />
           <Route path="/malditoClub2" element={<MalditoClub />} />
           <Route path="/" element={<Home />} />
         </Routes>

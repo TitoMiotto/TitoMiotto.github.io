@@ -27,6 +27,12 @@ Para desplegar con `npm run deploy`, configurar GitHub Pages para servir la rama
 ## Alcance y pendientes
 
 - La vista `/#/pv` es exclusivamente una demo visual responsive de categorías. El backend, las pantallas de productos y el carrito del proyecto original no forman parte de este repositorio.
-- El portal que se desarrolló para MalditoClub es un trabajo histórico; **no enlazar el dominio actual como si mostrara ese código**. Hay una captura local en `public/assets/imageMalditoClub.png`.
+- MalditoClub se puede explorar en `/#/maldito-club`: reutiliza las pantallas y datos locales de `srcMC`, con noticias, categorías y paginación. Es una demo histórica sin backend ni autenticación; no enlaza el sitio actual como si fuera ese desarrollo. Los recursos referenciados pero no incluidos se omiten para evitar imágenes rotas. Para restaurarlos, agregar las imágenes originales a `srcMC/assets` con sus nombres correspondientes.
 - Agregar, cuando se disponga de ellos, repositorios y capturas verificables del sistema comercial, punto de venta e investigación de corrección de respuestas.
 - Verificar títulos, fechas y enlaces a publicaciones científicas antes de publicarlos como citas bibliográficas formales.
+
+## Certificados de investigación
+
+Agregar `public/certificados/conaiisi-2025.pdf` y `public/certificados/wicc-2026.pdf`. Los enlaces aparecen en la ficha MCP solo si existen los respectivos archivos al compilar; no se muestran enlaces pendientes ni documentos inventados. Volver a compilar y desplegar al agregarlos.
+
+Las rutas de la demo (`/#/maldito-club/noticia/0` y `/#/maldito-club/etiqueta/1`) admiten enlaces directos y recarga en GitHub Pages. Desde la demo se puede volver a la sección Proyectos del portfolio.

@@ -1,10 +1,10 @@
+import { demoImage } from "../demoAssets";
 import MiniNoticia from "./miniNoticia.jsx";
 import Noticia from "./noticia2.jsx";
 import { Noticias } from "./configuracion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Plantilla2noticias = () => {
-    const navigate = useNavigate();
 
     const handleNoticiaClick = (e, index) => {
         // Solo para enlaces externos, si el usuario hace click normal
@@ -35,7 +35,7 @@ const Plantilla2noticias = () => {
                     {(() => {
                         const noticia = Noticias[3];
                         const isExternal = !!noticia.Link;
-                        const toPath = noticia.Link || `/noticia/3`;
+                        const toPath = noticia.Link || `/maldito-club/noticia/3`;
                         
                         return (
                             <Link
@@ -48,7 +48,7 @@ const Plantilla2noticias = () => {
                                 <Noticia
                                     titulo={noticia.titulo}
                                     texto={noticia.texto}
-                                    imagenSrc={`/assets/${noticia.imagen}`}
+                                    imagenSrc={demoImage(noticia.imagen)}
                                 />
                             </Link>
                         );
@@ -58,7 +58,7 @@ const Plantilla2noticias = () => {
                         {[4, 5, 6].map((index) => {
                             const noticia = Noticias[index];
                             const isExternal = !!noticia.Link;
-                            const toPath = noticia.Link || `/noticia/${index}`;
+                            const toPath = noticia.Link || `/maldito-club/noticia/${index}`;
                             
                             return (
                                 <Link
@@ -76,7 +76,7 @@ const Plantilla2noticias = () => {
                                 >
                                     <MiniNoticia
                                         titulo={noticia.titulo}
-                                        imagenSrc={`/assets/${noticia.imagen}`}
+                                        imagenSrc={demoImage(noticia.imagen)}
                                     />
                                 </Link>
                             );

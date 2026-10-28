@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { demoImage } from "../demoAssets";
 import { Link } from 'react-router-dom';
 
 
@@ -19,8 +20,11 @@ const Banner = ({banner}) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  const image = demoImage(banner.imagenSrc?.split("/").pop());
+  if (!image) return null;
+
   // Determinar si el banner es clickeable
-  console.log(banner.link);
+
   const hasLink = banner.link;
   
   // Variantes para animaciones
@@ -35,18 +39,9 @@ const Banner = ({banner}) => {
     }
   };
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  };
-
   // Contenido del banner
-  const BannerContent = () => (
-    <motion.div
+  const bannerContent = (
+    <Motion.div
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -63,7 +58,7 @@ const Banner = ({banner}) => {
       `}>
         
         {/* Fondo de imagen */}
-        <motion.div
+        <Motion.div
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ 
             scale: imageLoaded ? 1 : 1.1,
@@ -72,43 +67,43 @@ const Banner = ({banner}) => {
           transition={{ duration: 0.8 }}
           className="absolute inset-0 z-0"
         >
-          <img
-            src={banner.imagenSrc}
+          {image && <img
+            src={image}
             alt={banner.titulo}
             onLoad={() => setImageLoaded(true)}
             className="w-full h-full object-cover"
-          />
+          />}
           {/* Overlay oscuro para mejorar legibilidad del texto */}
           <div 
             className="absolute inset-0 bg-black"
             style={{ opacity: 0.5 }}
           />
-        </motion.div>
+        </Motion.div>
 
         {/* Texto centrado */}
         <div className="relative z-10 flex items-center justify-center w-full h-full">
           <div className="text-center px-6 py-8 text-white">
-            <motion.h2
+            <Motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               className="text-2xl md:text-4xl font-bold"
             >
               {banner.titulo}
-            </motion.h2>
+            </Motion.h2>
 
-            <motion.p
+            <Motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.5 }}
               className="text-gray-200 leading-relaxed mt-2 md:mt-4 text-sm md:text-base"
             >
               {banner.subtitulo}
-            </motion.p>
+            </Motion.p>
           </div>
         </div>
       </div>
-    </motion.div>
+    </Motion.div>
   );
 
   // Si el banner es clickeable, envolver en Link
@@ -120,13 +115,13 @@ const Banner = ({banner}) => {
         rel={ "noopener noreferrer" }
         className="block cursor-pointer hover:opacity-90 transition-opacity duration-300"
       >
-        <BannerContent />
+        {bannerContent}
       </Link>
     );
   }
 
   // Si no es clickeable, renderizar normalmente
-  return <BannerContent />;
+  return bannerContent;
 };
 
 export default Banner;

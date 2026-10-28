@@ -1,8 +1,9 @@
+import { demoImage } from "../demoAssets";
 import { useState, useEffect } from "react";
 import { Noticias } from "./configuracion";
-import { Link, useNavigate } from "react-router-dom"; // Importa Link
+import { Link } from "react-router-dom"; // Importa Link
 
-function MiniNoticia({ titulo, imagenSrc }) {
+function MiniNoticia({ titulo, imagenSrc, introduccion }) {
     return (
         <section className="">
             <div className="flex flex-col bg-black h-full rounded-3xl">
@@ -13,7 +14,9 @@ function MiniNoticia({ titulo, imagenSrc }) {
                                 object-contain transition-all duration-300 overflow-hidden"
                 />}
                 <div className="mt-auto p-3">
-                    <h2 className="text-2xl font-deuschtlander mb-1 tracking-wide text-white">{titulo}</h2>
+                    <h2 className="text-3xl font-deuschtlander mb-1 tracking-wide text-white">{titulo}</h2>
+                    {!imagenSrc && <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-300">{introduccion}</p>}
+                    <p className="mt-4 text-sm text-red-300">Leer noticia →</p>
                 </div>
             </div>
         </section>
@@ -39,7 +42,7 @@ function Body() {
                     {[1, 0, 2].map((index) => {
                         const noticia = Noticias[index];
                         // Determinar la URL según si tiene Link externo o es interna
-                        const toPath = noticia.Link ? noticia.Link : `/noticia/${index}`;
+                        const toPath = noticia.Link ? noticia.Link : `/maldito-club/noticia/${index}`;
                         const isExternal = !!noticia.Link;
 
                         return (
@@ -50,7 +53,7 @@ function Body() {
                                 rel={isExternal ? "noopener noreferrer" : undefined}
                                 className={`
                                     block p-2 
-                                    md:h-[60vh] transition duration-300 
+                                    md:min-h-[16rem] transition duration-300
                                     hover:shadow-xl hover:scale-[1.01] 
                                     text-white
                                     cursor-pointer
@@ -60,7 +63,8 @@ function Body() {
                             >
                                 <MiniNoticia
                                     titulo={noticia.titulo}
-                                    imagenSrc={`/assets/${noticia.imagen}`}
+                                    introduccion={noticia.texto[0]}
+                                    imagenSrc={demoImage(noticia.imagen)}
                                 />
                             </Link>
                         );

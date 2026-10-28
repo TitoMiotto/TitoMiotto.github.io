@@ -1,6 +1,6 @@
-import logoTikTok from "/assets/iconTiktokWhite.jpg";
-import logoInstagram from "/assets/iconInstaWhite.jpg";
-import logoYoutube from "/assets/iconYouWhite.jpg";
+import logoTikTok from "../assets/tiktok.png";
+import logoInstagram from "../assets/instagram.png";
+import logoYoutube from "../assets/youtube.png";
 
 
 export const Etiqueta = [

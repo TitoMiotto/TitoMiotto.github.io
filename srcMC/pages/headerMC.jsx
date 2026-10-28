@@ -1,4 +1,5 @@
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import logo from "../assets/logoExtendidoNegro.png";
+import { motion as Motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useMotionValueEvent, useMotionValue } from 'framer-motion';
 import { Link } from "react-router-dom"; // Importar Link
@@ -20,6 +21,15 @@ function HeaderAnimado() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = event => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [menuOpen]);
 
   // Scroll redondeado
   const roundedScrollY = useMotionValue(0);
@@ -59,21 +69,17 @@ function HeaderAnimado() {
     isMobile ? ["16px", "16px"] : ["50%", "72px"] // En móvil, posición fija
   );
 
-  const menuOpacity = useTransform(
-    roundedScrollY, 
-    scrollRange, 
-    isMobile ? [1, 1] : [0, 1] // En móvil, menú siempre visible
-  );
-
   return (
     <>
-      <motion.header
+      <Motion.header
         className="sticky top-0 z-50 w-full bg-black shadow-sm flex flex-col items-center"
         style={{ height: headerHeight }}
       >
         <div className="w-full h-full flex items-center text-white">
           {/* BOTON MENU - Siempre clickeable */}
-          <motion.button
+          <Motion.button
+            aria-label={menuOpen ? "Cerrar categorías" : "Abrir categorías"}
+            aria-expanded={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl z-10 p-1"
             style={{ 
@@ -82,11 +88,11 @@ function HeaderAnimado() {
             }}
           >
             {menuOpen ? "✕" : "☰"}
-          </motion.button>
+          </Motion.button>
           {/* LOGO ICONO - Para móvil siempre visible, para desktop animado */}
-          <motion.img
-            src={`/assets/logoSmall.png`} 
-            className={`absolute h-10 w-auto ${isMobile ? ' justify-self-start' : ''}`}
+          <Motion.img
+            src={logo} alt="Maldito Club"
+            className="absolute left-16 h-8 max-w-[65%] bg-white object-contain"
             style={isMobile ? {
               opacity: 1
             } : {
@@ -99,7 +105,7 @@ function HeaderAnimado() {
 
           {/* LOGO EXTENDIDO - Solo en desktop */}
           {!isMobile && (
-            <motion.div className="absolute flex flex-col items-center justify-center"
+            <Motion.div className="absolute flex flex-col items-center justify-center"
                   style={{
                   opacity: opacityLarge,
                   left: "50%",
@@ -107,44 +113,45 @@ function HeaderAnimado() {
                   translateX: "-50%",
                   translateY: "-50%"
                 }}>
-              <motion.img
-                src={`/assets/logoExtendido.png`}
-                className="h-16 w-auto"
+              <Motion.img
+                src={logo} alt="Maldito Club"
+                className="h-12 w-auto max-w-[65vw] bg-white object-contain"
               />
 
                 <nav className="flex text-lg">
                   {LinksItems.map((item) => (
-                    <motion.div
+                    <Motion.div
                       key={item.id}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <Link 
                         to={item.href}
+                        target="_blank" rel="noopener noreferrer"
                         className="hover:text-red-600 px-1 py-1 inline-block"
                         onClick={() => setMenuOpen(false)} // cerrar menú al hacer click
                       >
-                        <motion.img
+                        <Motion.img
                           src={item.logo}
-                          alt="content visual"
+                          alt={item.id === 1 ? "YouTube" : item.id === 2 ? "Instagram" : "TikTok"}
                           className="max-h-7 w-auto"
                         />
                       </Link>
-                    </motion.div>
+                    </Motion.div>
                   ))}
                 </nav>
-            </motion.div>
+            </Motion.div>
           )}
 
         </div>
-      </motion.header>
+      </Motion.header>
 
       {/* MENU LATERAL - Mejorado para móvil */}
       <AnimatePresence>
         {menuOpen && (
           <>
             {/* FONDO OSCURO */}
-            <motion.div
+            <Motion.div
               className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -153,7 +160,7 @@ function HeaderAnimado() {
             />
 
             {/* PANEL - Ancho responsivo */}
-            <motion.div
+            <Motion.div
               className="fixed top-0 left-0 h-full bg-black shadow-xl z-50 p-6"
               style={{ 
                 width: isMobile ? '85%' : '256px', // 85% en móvil, 256px en desktop
@@ -164,24 +171,26 @@ function HeaderAnimado() {
               exit={{ x: -300 }}
               transition={{ type: "spring", stiffness: 260, damping: 25 }}
             >
-              <nav className="flex flex-col gap-6 text-lg mt-12">
+              <button type="button" onClick={() => setMenuOpen(false)} className="text-white p-2">Cerrar categorías ✕</button>
+              <nav aria-label="Categorías" className="flex flex-col gap-6 text-lg mt-6">
+                <Link to="/maldito-club" onClick={() => setMenuOpen(false)} className="text-white">Inicio del portal</Link>
                 {Etiqueta.map((item) => (
-                  <motion.div
+                  <Motion.div
                     key={item.id}
                     whileHover={{ scale: 1.05, x: 4 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <Link 
-                      to={"/etiqueta/" + item.id}
+                      to={"/maldito-club/etiqueta/" + item.id}
                       className="hover:text-red-600 transition px-2 py-1 text-white inline-block w-full"
                       onClick={() => setMenuOpen(false)} // cerrar menú al hacer click
                     >
                       {item.name}
                     </Link>
-                  </motion.div>
+                  </Motion.div>
                 ))}
               </nav>
-            </motion.div>
+            </Motion.div>
           </>
         )}
       </AnimatePresence>

@@ -1,5 +1,12 @@
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion as Motion } from 'framer-motion';
+
+const certificateFiles = import.meta.glob('/public/certificados/*.pdf', { eager: true, query: '?url', import: 'default' });
+const mcpCertificates = [
+  { filename: 'conaiisi-2025.pdf', label: 'CONAIISI 2025' },
+  { filename: 'wicc-2026.pdf', label: 'WICC 2026' },
+].filter(item => certificateFiles[`/public/certificados/${item.filename}`]);
 
 const projects = [
   {
@@ -15,20 +22,21 @@ const projects = [
     details: 'Trabajo de investigación, diseño e implementación de prototipos, elaboración de reportes de avance, evaluación experimental y comunicación de resultados científicos. Proyecto desarrollado en el Laboratorio de Investigación en Software de la UTN.',
     tags: ['MCP', 'LLM', 'Integración', 'Prototipos', 'Investigación'],
     href: 'https://github.com/UTN-LIS/MCP_Web_Scrapper',
-    hrefLabel: 'Ver repositorio', status: 'Investigación',
+    hrefLabel: 'Ver repositorio', status: 'Investigación', certificates: mcpCertificates,
   },
   {
     num: '03', category: 'FREELANCE · PORTAL DE CONTENIDOS', title: 'MalditoClub — portal de noticias',
     description: 'Portal para publicar noticias de actualidad, organizarlas por secciones e incorporar imágenes, con una interfaz simple de carga de contenidos.',
-    details: 'Desarrollo individual para el proyecto radiofónico MalditoClub, en La Rioja. Se implementó el portal de visualización y publicación de noticias, integrado con la autenticación ya existente. El cliente posteriormente reemplazó la página por otro sistema: esta ficha documenta el trabajo realizado, no la web actual.',
+    details: 'Desarrollo individual para el proyecto radiofónico MalditoClub, en La Rioja. Se implementó el portal de visualización y publicación de noticias, integrado con la autenticación ya existente. El cliente posteriormente reemplazó la página por otro sistema: esta demo recupera las pantallas y los datos de muestra del proyecto original, con navegación por noticias y categorías.',
     tags: ['Desarrollo web', 'Gestión de contenidos', 'Categorías', 'Publicación de noticias'],
-    image: `${import.meta.env.BASE_URL}assets/imageMalditoClub.png`, status: 'Proyecto realizado',
+    internal: '/maldito-club', hrefLabel: 'Explorar demo interactiva', status: 'Proyecto realizado',
   },
   {
     num: '04', category: 'FREELANCE · SISTEMA COMERCIAL', title: 'Catálogo y gestión de pedidos',
     description: 'Aplicación comercial con catálogo de productos, carrito y registro de pedidos, sin procesamiento de pagos.',
     details: 'Desarrollo individual de interfaces para clientes y administración, backend y persistencia de datos. Funcionalidades de gestión de productos, stock, usuarios, estados de pedidos y notificaciones. Proyecto en etapa final de desarrollo.',
     tags: ['JavaScript', 'Vite', 'Node.js', 'PostgreSQL', 'API', 'Carrito'],
+    href: 'https://ncmhomelr.github.io/', hrefLabel: 'Ver catálogo',
     status: 'En desarrollo',
   },
   {
@@ -46,6 +54,34 @@ const projects = [
     status: 'Proyecto personal',
   },
 ];
+
+function EmailContact() {
+  const email = 'zsantinoz@gmail.com';
+  const inputRef = useRef(null);
+  const [message, setMessage] = useState('');
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(email);
+      setMessage('Correo copiado.');
+    } catch {
+      inputRef.current.focus();
+      inputRef.current.select();
+      setMessage('Seleccioné el correo para que puedas copiarlo manualmente.');
+    }
+  }
+
+  return (
+    <div className="w-full">
+      <label htmlFor="contact-email" className="mb-2 block text-sm text-slate-400">Correo electrónico</label>
+      <div className="flex flex-wrap gap-3">
+        <input ref={inputRef} id="contact-email" type="text" readOnly value={email} onFocus={event => event.target.select()} className="min-h-11 w-full max-w-xs rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-base text-white focus-visible:outline-2 focus-visible:outline-emerald-400" />
+        <button type="button" onClick={copyEmail} className="rounded-lg bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-300">Copiar correo</button>
+      </div>
+      <p role="status" className="mt-2 min-h-5 text-sm text-emerald-300">{message}</p>
+    </div>
+  );
+}
 
 function Arrow({ external = false }) {
   return <span aria-hidden="true" className="ml-1">{external ? '↗' : '→'}</span>;
@@ -65,6 +101,12 @@ function ProjectCard({ project }) {
         <summary className="cursor-pointer select-none font-medium text-emerald-300 hover:text-emerald-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-400">Qué desarrollé <span aria-hidden="true">+</span></summary>
         <p className="mt-3 leading-6">{project.details}</p>
       </details>
+      {project.certificates?.length > 0 && <div className="mt-5 border-t border-slate-800 pt-4">
+        <p className="mb-2 text-xs text-slate-400">Certificados de presentación</p>
+        <ul className="flex flex-wrap gap-3 text-sm">
+          {project.certificates.map(item => <li key={item.filename}><a href={`${import.meta.env.BASE_URL}certificados/${item.filename}`} target="_blank" rel="noopener noreferrer" className="text-emerald-300 hover:underline">{item.label} · PDF <Arrow external /></a></li>)}
+        </ul>
+      </div>}
       <div className="mt-auto pt-5">
         <div className="flex flex-wrap gap-2" aria-label="Tecnologías y áreas">
           {project.tags.map(tag => <span key={tag} className="rounded-md border border-slate-700/75 bg-slate-800/60 px-2.5 py-1 text-xs text-slate-300">{tag}</span>)}
@@ -88,53 +130,57 @@ function SectionHeading({ eyebrow, title, children }) {
 }
 
 export default function Home() {
+  const { hash, key } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const target = document.getElementById(hash.slice(1));
+    if (target) {
+      target.focus({ preventScroll: true });
+      target.scrollIntoView();
+    }
+  }, [hash, key]);
+
   const cvUrl = `${import.meta.env.BASE_URL}CV_Tito_Montivero_Detallado_ATS.pdf`;
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#080d15] text-slate-200">
       <header className="border-b border-slate-800/70">
         <nav className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-5 sm:px-8" aria-label="Navegación principal">
-          <a href="#inicio" className="font-mono text-base font-bold tracking-tight text-white">TM<span className="text-emerald-400">_</span></a>
+          <Link to={{ pathname: "/", hash: "#inicio" }} className="font-mono text-base font-bold tracking-tight text-white">TM<span className="text-emerald-400">_</span></Link>
           <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300 sm:gap-x-8">
-            <a href="#proyectos" className="hover:text-emerald-300">Proyectos</a>
-            <a href="#experiencia" className="hover:text-emerald-300">Experiencia</a>
-            <a href="#contacto" className="hover:text-emerald-300">Contacto</a>
+            <Link to={{ pathname: "/", hash: "#proyectos" }} className="hover:text-emerald-300">Proyectos</Link>
+            <Link to={{ pathname: "/", hash: "#experiencia" }} className="hover:text-emerald-300">Experiencia</Link>
+            <Link to={{ pathname: "/", hash: "#contacto" }} className="hover:text-emerald-300">Contacto</Link>
           </div>
         </nav>
       </header>
 
-      <main id="inicio">
-        <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-20 pt-16 sm:px-8 sm:pb-24 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_290px] lg:items-end lg:gap-12">
+      <main id="inicio" tabIndex={-1}>
+        <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-20 pt-16 sm:px-8 sm:pb-24 sm:pt-24">
           <div className="min-w-0">
-            <motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.45}} className="mb-5 font-mono text-sm text-emerald-400">&gt; Hola, soy Tito Santino Montivero</motion.p>
-            <motion.h1 initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.55,delay:.08}} className="max-w-3xl text-4xl font-bold leading-[1.13] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
-              Desarrollo de software <span className="text-emerald-400">e investigación en IA.</span>
-            </motion.h1>
-            <motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.55,delay:.16}} className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+            <Motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.45}} className="mb-5 font-mono text-sm text-emerald-400">&gt; Hola, soy Tito Santino Montivero</Motion.p>
+            <Motion.h1 initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.55,delay:.08}} className="max-w-3xl text-4xl font-bold leading-[1.13] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+              Ing. en Sistemas de <span className="text-emerald-400">Información.</span>
+            </Motion.h1>
+            <Motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.55,delay:.16}} className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
               Desarrollador full stack e investigador en el Laboratorio de Investigación en Software de la UTN. Construyo sistemas web y experimento con modelos de lenguaje para resolver problemas concretos.
-            </motion.p>
-            <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.5,delay:.25}} className="mt-8 flex flex-wrap gap-3">
-              <a href="#proyectos" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300">Ver proyectos <Arrow /></a>
+            </Motion.p>
+            <Motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.5,delay:.25}} className="mt-8 flex flex-wrap gap-3">
+              <Link to={{ pathname: "/", hash: "#proyectos" }} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300">Ver proyectos <Arrow /></Link>
               <a href={cvUrl} download="CV_Tito_Santino_Montivero.pdf" className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-600 px-5 py-3 text-sm font-medium text-white transition hover:border-emerald-400 hover:text-emerald-300">Descargar CV ↓</a>
               <a href="https://github.com/TitoMiotto" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-800 px-5 py-3 text-sm font-medium text-slate-300 transition hover:border-slate-600 hover:text-white">GitHub <Arrow external /></a>
-            </motion.div>
+            </Motion.div>
           </div>
-          <aside className="rounded-2xl border border-slate-800 bg-slate-900/45 p-6" aria-label="Situación académica">
-            <p className="font-mono text-xs tracking-wider text-emerald-400">EN FORMACIÓN</p>
-            <p className="mt-4 text-4xl font-bold tracking-tight text-white">43<span className="text-slate-500">/44</span></p>
-            <p className="mt-2 text-sm leading-6 text-slate-300">Materias aprobadas en Ingeniería en Sistemas de Información.</p>
-            <div className="my-5 h-1.5 overflow-hidden rounded-full bg-slate-700"><div className="h-full w-[97.73%] rounded-full bg-emerald-400" /></div>
-            <p className="text-xs leading-5 text-slate-400">UTN Facultad Regional Córdoba · Pendiente: Proyecto Final (tesis).</p>
-          </aside>
         </section>
 
-        <section id="proyectos" className="scroll-mt-8 border-t border-slate-800/60 bg-[#0b111b] py-16 sm:py-20">
+        <section id="proyectos" tabIndex={-1} className="scroll-mt-8 border-t border-slate-800/60 bg-[#0b111b] py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <SectionHeading eyebrow="01 / TRABAJO SELECCIONADO" title="Proyectos e investigaciones">Investigación académica, desarrollos freelance y sistemas construidos de forma independiente. Cada ficha explica qué resolví y qué tecnologías utilicé.</SectionHeading>
             <div className="grid gap-5 md:grid-cols-2 xl:gap-6">{projects.map(project => <ProjectCard project={project} key={project.num} />)}</div>
           </div>
         </section>
 
-        <section id="experiencia" className="scroll-mt-8 mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+        <section id="experiencia" tabIndex={-1} className="scroll-mt-8 mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <SectionHeading eyebrow="02 / TRAYECTORIA" title="Experiencia y formación">Combino el ciclo completo de desarrollo de productos con investigación experimental y publicación científica.</SectionHeading>
           <div className="grid gap-5 lg:grid-cols-2">
             <div className="rounded-2xl border border-slate-800 p-6 sm:p-7">
@@ -161,11 +207,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contacto" className="scroll-mt-8 border-t border-slate-800/60 bg-[#0b111b] py-16 sm:py-20">
+        <section id="contacto" tabIndex={-1} className="scroll-mt-8 border-t border-slate-800/60 bg-[#0b111b] py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <SectionHeading eyebrow="03 / CONTACTO" title="¿Hablamos?">Me interesan los desafíos de ingeniería de software, desarrollo web e investigación aplicada.</SectionHeading>
             <div className="flex flex-wrap gap-3">
-              <a href="mailto:zsantinoz@gmail.com" className="rounded-lg bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-300">Enviar correo <Arrow external /></a>
+              <EmailContact />
               <a href="https://github.com/TitoMiotto" target="_blank" rel="noopener noreferrer" className="rounded-lg border border-slate-600 px-5 py-3 text-sm font-medium text-white hover:border-emerald-400">GitHub <Arrow external /></a>
             </div>
           </div>

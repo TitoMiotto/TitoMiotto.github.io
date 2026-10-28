@@ -1,16 +1,32 @@
-# React + Vite
+# Portfolio — Tito Santino Montivero
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio construido con React, Vite y Tailwind CSS. Incluye una muestra visual del proyecto de restaurante (`/#/pv`).
 
-Currently, two official plugins are available:
+## Desarrollo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm ci
+npm run dev
+```
 
-## React Compiler
+## Verificación
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run lint
+npm run build
+```
 
-## Expanding the ESLint configuration
+## Publicación en GitHub Pages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+El proyecto utiliza `HashRouter`, por lo que las rutas públicas funcionan con `/#/` y `/#/pv` sin requerir reescritura del servidor.
+
+La descarga del CV se realiza desde `public/CV_Tito_Montivero_Detallado_ATS.pdf`. **Actualizar este archivo** al modificar el currículum. Después de ejecutar `npm run build`, comprobar que exista en `dist/`.
+
+Para desplegar con `npm run deploy`, configurar GitHub Pages para servir la rama `gh-pages` (raíz) si todavía no lo está, o usar el flujo de Actions del repositorio. No ejecutar ambos métodos de despliegue simultáneamente.
+
+## Alcance y pendientes
+
+- La vista `/#/pv` es exclusivamente una demo visual responsive de categorías. El backend, las pantallas de productos y el carrito del proyecto original no forman parte de este repositorio.
+- El portal que se desarrolló para MalditoClub es un trabajo histórico; **no enlazar el dominio actual como si mostrara ese código**. Hay una captura local en `public/assets/imageMalditoClub.png`.
+- Agregar, cuando se disponga de ellos, repositorios y capturas verificables del sistema comercial, punto de venta e investigación de corrección de respuestas.
+- Verificar títulos, fechas y enlaces a publicaciones científicas antes de publicarlos como citas bibliográficas formales.

@@ -1,157 +1,177 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-import malditoImg from '/assets/imageMalditoClub.png'
+const projects = [
+  {
+    num: '01', category: 'INVESTIGACIÓN · INTELIGENCIA ARTIFICIAL', title: 'Evaluación automática de respuestas con LLM',
+    description: 'Investigación sobre el uso de modelos de lenguaje pequeños para evaluar respuestas abiertas a partir de criterios de corrección y métricas cuantitativas.',
+    details: 'Responsable de la planificación y seguimiento del proyecto, investigación bibliográfica, preparación del dataset, implementación, experimentación, análisis de resultados e informes de avance. Implementación y evaluación de enfoques de fine-tuning y RAG; estudio de OCR, redes neuronales y mecanismos de atención.',
+    tags: ['Python', 'LLM', 'NLP', 'Fine-tuning', 'RAG', 'Evaluación experimental'],
+    status: 'Investigación',
+  },
+  {
+    num: '02', category: 'INVESTIGACIÓN · INTEGRACIÓN DE SISTEMAS', title: 'Integración de herramientas y agentes mediante MCP',
+    description: 'Investigación independiente sobre integración de modelos de lenguaje con herramientas y servicios utilizando Model Context Protocol (MCP).',
+    details: 'Trabajo de investigación, diseño e implementación de prototipos, elaboración de reportes de avance, evaluación experimental y comunicación de resultados científicos. Proyecto desarrollado en el Laboratorio de Investigación en Software de la UTN.',
+    tags: ['MCP', 'LLM', 'Integración', 'Prototipos', 'Investigación'],
+    href: 'https://github.com/UTN-LIS/MCP_Web_Scrapper',
+    hrefLabel: 'Ver repositorio', status: 'Investigación',
+  },
+  {
+    num: '03', category: 'FREELANCE · PORTAL DE CONTENIDOS', title: 'MalditoClub — portal de noticias',
+    description: 'Portal para publicar noticias de actualidad, organizarlas por secciones e incorporar imágenes, con una interfaz simple de carga de contenidos.',
+    details: 'Desarrollo individual para el proyecto radiofónico MalditoClub, en La Rioja. Se implementó el portal de visualización y publicación de noticias, integrado con la autenticación ya existente. El cliente posteriormente reemplazó la página por otro sistema: esta ficha documenta el trabajo realizado, no la web actual.',
+    tags: ['Desarrollo web', 'Gestión de contenidos', 'Categorías', 'Publicación de noticias'],
+    image: `${import.meta.env.BASE_URL}assets/imageMalditoClub.png`, status: 'Proyecto realizado',
+  },
+  {
+    num: '04', category: 'FREELANCE · SISTEMA COMERCIAL', title: 'Catálogo y gestión de pedidos',
+    description: 'Aplicación comercial con catálogo de productos, carrito y registro de pedidos, sin procesamiento de pagos.',
+    details: 'Desarrollo individual de interfaces para clientes y administración, backend y persistencia de datos. Funcionalidades de gestión de productos, stock, usuarios, estados de pedidos y notificaciones. Proyecto en etapa final de desarrollo.',
+    tags: ['JavaScript', 'Vite', 'Node.js', 'PostgreSQL', 'API', 'Carrito'],
+    status: 'En desarrollo',
+  },
+  {
+    num: '05', category: 'PROYECTO PERSONAL · GASTRONOMÍA', title: 'Sistema para restaurantes',
+    description: 'Sistema de gestión de catálogo y pedidos para restaurantes, diseñado para digitalizar y organizar la operación.',
+    details: 'Desarrollo personal de un sistema orientado a la gestión de carta y comandas. Incluyo una vista de demostración del catálogo; las pantallas y operaciones completas del proyecto no forman parte de este repositorio del portfolio.',
+    tags: ['Desarrollo web', 'Gestión de pedidos', 'Catálogo'],
+    internal: '/pv', hrefLabel: 'Ver demo de catálogo', status: 'Proyecto personal',
+  },
+  {
+    num: '06', category: 'PROYECTO PERSONAL · COMERCIOS', title: 'Punto de venta (POS)',
+    description: 'Proyecto de software para operaciones de venta y gestión de productos en pequeños comercios.',
+    details: 'Proyecto personal enfocado en el desarrollo de herramientas de gestión comercial. Información técnica, capturas y repositorio pendientes de publicación.',
+    tags: ['Sistema de gestión', 'Ventas', 'Software comercial'],
+    status: 'Proyecto personal',
+  },
+];
 
-function ExpandableAbout({ title, text, foot, image }) {
-  const [open, setOpen] = useState(false);
+function Arrow({ external = false }) {
+  return <span aria-hidden="true" className="ml-1">{external ? '↗' : '→'}</span>;
+}
 
+function ProjectCard({ project }) {
   return (
-    <div className="border border-slate-800 rounded-xl p-5 ">
-      
-      {/* Header */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center text-left "
-      >
-        <span className="text-green-400 font-mono">
-          &gt; {title}
-        </span>
-
-        <span className="text-gray-500">
-          {open ? "−" : "+"}
-        </span>
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="overflow-hidden"
-          >
-            <div className="mt-6 grid md:grid-cols-2 gap-8 items-center ">
-              
-              <div>
-                <p className="text-gray-400 leading-relaxed">
-                  {text}
-                </p>
-
-                {foot && (
-                  <p className="text-gray-500 mt-4">
-                    {foot}
-                  </p>
-                )}
-              </div>
-
-              {image && (
-                <div>
-                  <img
-                    src={image}
-                    alt="content visual"
-                    className="rounded-lg border border-slate-800"
-                  />
-                </div>
-              )}
-
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <article className="project-card group flex h-full flex-col rounded-2xl border border-slate-800/90 bg-slate-900/35 p-5 sm:p-6">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <p className="text-[11px] font-semibold tracking-[.13em] text-emerald-400">{project.category}</p>
+        <span className="shrink-0 text-xs font-mono text-slate-500">{project.num}</span>
+      </div>
+      {project.image && <img className="mb-5 aspect-[16/9] w-full rounded-xl border border-slate-700/70 object-cover object-top" src={project.image} alt="Captura del portal de noticias desarrollado para MalditoClub" loading="lazy" />}
+      <h3 className="mb-3 text-xl font-semibold tracking-tight text-slate-50">{project.title}</h3>
+      <p className="text-sm leading-6 text-slate-300">{project.description}</p>
+      <details className="project-details mt-4 text-sm text-slate-400">
+        <summary className="cursor-pointer select-none font-medium text-emerald-300 hover:text-emerald-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-400">Qué desarrollé <span aria-hidden="true">+</span></summary>
+        <p className="mt-3 leading-6">{project.details}</p>
+      </details>
+      <div className="mt-auto pt-5">
+        <div className="flex flex-wrap gap-2" aria-label="Tecnologías y áreas">
+          {project.tags.map(tag => <span key={tag} className="rounded-md border border-slate-700/75 bg-slate-800/60 px-2.5 py-1 text-xs text-slate-300">{tag}</span>)}
+        </div>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-4 text-xs">
+          <span className="text-slate-400">{project.status}</span>
+          {project.href && <a href={project.href} target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-300 hover:text-emerald-200">{project.hrefLabel}<Arrow external /></a>}
+          {project.internal && <Link to={project.internal} className="font-medium text-emerald-300 hover:text-emerald-200">{project.hrefLabel}<Arrow /></Link>}
+        </div>
+      </div>
+    </article>
   );
 }
 
+function SectionHeading({ eyebrow, title, children }) {
+  return <div className="mb-8 max-w-2xl">
+    <p className="mb-3 font-mono text-xs font-medium tracking-[.17em] text-emerald-400">{eyebrow}</p>
+    <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{title}</h2>
+    {children && <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">{children}</p>}
+  </div>;
+}
+
 export default function Home() {
+  const cvUrl = `${import.meta.env.BASE_URL}CV_Tito_Montivero_Detallado_ATS.pdf`;
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-300 flex flex-col justify-center px-6  py-10 ">
-      
-      {/* HERO */}
-      <section className="max-w-4xl">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-green-400 font-mono mb-4"
-        >
-          &gt; Hola, soy Tito_
-        </motion.p>
+    <div className="min-h-screen overflow-x-hidden bg-[#080d15] text-slate-200">
+      <header className="border-b border-slate-800/70">
+        <nav className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-5 sm:px-8" aria-label="Navegación principal">
+          <a href="#inicio" className="font-mono text-base font-bold tracking-tight text-white">TM<span className="text-emerald-400">_</span></a>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300 sm:gap-x-8">
+            <a href="#proyectos" className="hover:text-emerald-300">Proyectos</a>
+            <a href="#experiencia" className="hover:text-emerald-300">Experiencia</a>
+            <a href="#contacto" className="hover:text-emerald-300">Contacto</a>
+          </div>
+        </nav>
+      </header>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl md:text-6xl font-bold text-white leading-tight"
-        >
-          Ing en sistemas de informacion.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="mt-6 text-lg text-gray-400 max-w-2xl"
-        >
-          este es un portafolio con proyectos personales e informacion sobre mi.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="mt-8 flex gap-4"
-        >
-          <a
-            href="#projects"
-            className="px-6 py-3 bg-green-500 text-black font-semibold rounded-lg hover:bg-green-400 transition"
-          >
-            Ver proyectos
-          </a>
-
-          <a
-            href="/cv.pdf"
-            className="px-6 py-3 border border-gray-600 rounded-lg hover:border-green-400 hover:text-green-400 transition"
-          >
-            Descargar CV
-          </a>
-        </motion.div>
-      </section>
-
-      {/* ABOUT EXPANDABLE */}
-        <section className="mt-10 max-w-4xl space-y-4">
-            <ExpandableAbout
-            title="restaurante"
-            text="Aplicación independiente diseñada para simplificar la gestión de pedidos en restaurantes. Olvídate del papel y los errores. Controla las comandas, sigue el estado de cada pedido en tiempo real y mejora la comunicación entre el salón y la cocina, todo desde una interfaz clara y fácil de usar. La solución perfecta para poner el foco en lo que importa: la comida y el cliente."
-            foot=" Este proyecto de desarrollo independiente consiste en la creación de una aplicación web/móvil diseñada específicamente para optimizar la gestión de pedidos en un local de comida. La aplicación aborda los desafíos comunes de la operación diaria, como la lentitud en la toma de pedidos, los errores de comunicación en cocina y la dificultad para llevar un control del estado de cada comanda. Su objetivo es digitalizar y agilizar el flujo de trabajo desde que el cliente realiza el pedido hasta que este es entregado, mejorando la eficiencia del personal y la experiencia del cliente."
-            image="../Assets/react.svg"
-        />
-        </section>
-        <section className="mt-10 max-w-4xl space-y-4">
-            <ExpandableAbout
-            title="MalditoClub"
-            text="Plataforma digital construida desde cero para Maldito Club, un proyecto radiofónico que buscaba un hogar en internet. lo ideamos junto a los chicos de maldito club que necesitaban entralizar toda su información, noticias y novedades en un solo espacio, creando un ecosistema digital. Esta es la solución perfecta para ordenar el caos creativo y conectar con su audiencia de manera directa y auténtica."
-            foot={
-                <div>
-                    <a href="https://malditoclub.github.io/" target="_blank" rel="noopener noreferrer" 
-                      className="text-blue-500 hover:underline mt-2 inline-block">
-                        Inicio del desarrollo: 19/2/2026
-                    </a>
-                </div>
-            }
-            image={malditoImg}
-        />
-        </section>
-        <section className="mt-10 max-w-4xl space-y-4">
-            <ExpandableAbout
-            title="Sobre mí"
-            text="Soy desarrollador frontend enfocado en crear experiencias modernas, rápidas y escalables con React."
-            foot="Me especializo en performance, arquitectura limpia y buenas prácticas."
-            image="https://images.unsplash.com/photo-1518770660439-4636190af475"
-        />
+      <main id="inicio">
+        <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-20 pt-16 sm:px-8 sm:pb-24 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_290px] lg:items-end lg:gap-12">
+          <div className="min-w-0">
+            <motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.45}} className="mb-5 font-mono text-sm text-emerald-400">&gt; Hola, soy Tito Santino Montivero</motion.p>
+            <motion.h1 initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.55,delay:.08}} className="max-w-3xl text-4xl font-bold leading-[1.13] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+              Desarrollo de software <span className="text-emerald-400">e investigación en IA.</span>
+            </motion.h1>
+            <motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.55,delay:.16}} className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+              Desarrollador full stack e investigador en el Laboratorio de Investigación en Software de la UTN. Construyo sistemas web y experimento con modelos de lenguaje para resolver problemas concretos.
+            </motion.p>
+            <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.5,delay:.25}} className="mt-8 flex flex-wrap gap-3">
+              <a href="#proyectos" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300">Ver proyectos <Arrow /></a>
+              <a href={cvUrl} download="CV_Tito_Santino_Montivero.pdf" className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-600 px-5 py-3 text-sm font-medium text-white transition hover:border-emerald-400 hover:text-emerald-300">Descargar CV ↓</a>
+              <a href="https://github.com/TitoMiotto" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-800 px-5 py-3 text-sm font-medium text-slate-300 transition hover:border-slate-600 hover:text-white">GitHub <Arrow external /></a>
+            </motion.div>
+          </div>
+          <aside className="rounded-2xl border border-slate-800 bg-slate-900/45 p-6" aria-label="Situación académica">
+            <p className="font-mono text-xs tracking-wider text-emerald-400">EN FORMACIÓN</p>
+            <p className="mt-4 text-4xl font-bold tracking-tight text-white">43<span className="text-slate-500">/44</span></p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">Materias aprobadas en Ingeniería en Sistemas de Información.</p>
+            <div className="my-5 h-1.5 overflow-hidden rounded-full bg-slate-700"><div className="h-full w-[97.73%] rounded-full bg-emerald-400" /></div>
+            <p className="text-xs leading-5 text-slate-400">UTN Facultad Regional Córdoba · Pendiente: Proyecto Final (tesis).</p>
+          </aside>
         </section>
 
+        <section id="proyectos" className="scroll-mt-8 border-t border-slate-800/60 bg-[#0b111b] py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <SectionHeading eyebrow="01 / TRABAJO SELECCIONADO" title="Proyectos e investigaciones">Investigación académica, desarrollos freelance y sistemas construidos de forma independiente. Cada ficha explica qué resolví y qué tecnologías utilicé.</SectionHeading>
+            <div className="grid gap-5 md:grid-cols-2 xl:gap-6">{projects.map(project => <ProjectCard project={project} key={project.num} />)}</div>
+          </div>
+        </section>
+
+        <section id="experiencia" className="scroll-mt-8 mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+          <SectionHeading eyebrow="02 / TRAYECTORIA" title="Experiencia y formación">Combino el ciclo completo de desarrollo de productos con investigación experimental y publicación científica.</SectionHeading>
+          <div className="grid gap-5 lg:grid-cols-2">
+            <div className="rounded-2xl border border-slate-800 p-6 sm:p-7">
+              <p className="font-mono text-xs text-emerald-400">2025 — ACTUALIDAD</p>
+              <h3 className="mt-3 text-xl font-semibold text-white">Investigador · LIS, UTN FRC</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-300">Planeamiento, implementación y evaluación de dos líneas de investigación: integración mediante MCP y evaluación automática con modelos de lenguaje pequeños. Preparación de datasets, experimentación, análisis de métricas, reportes y seguimiento de proyectos.</p>
+              <p className="mt-4 text-sm text-slate-400">Publicaciones y trabajos presentados en CONAIISI 2025, CONAIISI 2026 y WICC 2026.</p>
+            </div>
+            <div className="rounded-2xl border border-slate-800 p-6 sm:p-7">
+              <p className="font-mono text-xs text-emerald-400">EXPERIENCIA COMPLEMENTARIA</p>
+              <h3 className="mt-3 text-xl font-semibold text-white">Desarrollo web y sistemas</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-300">Proyectos freelance individuales para publicación de contenidos y gestión de pedidos. Participación en el grupo universitario de ciberseguridad e infraestructura (2023–2024), con trabajos sobre redes, VPN y servidores web.</p>
+              <p className="mt-4 text-sm text-slate-400">Pasantía universitaria (2022): relevamiento informático de hardware y software para el municipio de La Calera.</p>
+            </div>
+          </div>
+          <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/25 p-6 sm:p-7">
+            <h3 className="text-lg font-semibold text-white">Tecnologías y áreas de trabajo</h3>
+            <dl className="mt-4 grid gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+              <div><dt className="font-medium text-emerald-300">Desarrollo web</dt><dd className="mt-1 leading-6 text-slate-300">JavaScript, React, Vite, Node.js, APIs REST, SQL y PostgreSQL.</dd></div>
+              <div><dt className="font-medium text-emerald-300">IA aplicada</dt><dd className="mt-1 leading-6 text-slate-300">Python, LLM, NLP, fine-tuning, RAG, MCP y evaluación experimental.</dd></div>
+              <div><dt className="font-medium text-emerald-300">Conocimientos complementarios</dt><dd className="mt-1 leading-6 text-slate-300">OCR, redes neuronales, mecanismos de atención e infraestructura de redes.</dd></div>
+              <div><dt className="font-medium text-emerald-300">Idiomas</dt><dd className="mt-1 leading-6 text-slate-300">Inglés: lectura técnica y escritura básica.</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <section id="contacto" className="scroll-mt-8 border-t border-slate-800/60 bg-[#0b111b] py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <SectionHeading eyebrow="03 / CONTACTO" title="¿Hablamos?">Me interesan los desafíos de ingeniería de software, desarrollo web e investigación aplicada.</SectionHeading>
+            <div className="flex flex-wrap gap-3">
+              <a href="mailto:zsantinoz@gmail.com" className="rounded-lg bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-300">Enviar correo <Arrow external /></a>
+              <a href="https://github.com/TitoMiotto" target="_blank" rel="noopener noreferrer" className="rounded-lg border border-slate-600 px-5 py-3 text-sm font-medium text-white hover:border-emerald-400">GitHub <Arrow external /></a>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-5 py-6 text-xs text-slate-500 sm:px-8"><span>© {new Date().getFullYear()} Tito Santino Montivero</span><span>Córdoba, Argentina · Portfolio personal</span></footer>
     </div>
   );
 }

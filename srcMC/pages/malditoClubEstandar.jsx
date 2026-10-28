@@ -1,0 +1,52 @@
+
+import HeaderAnimado from "./headerMC";
+import Body from "./body";
+import Banner from "./banner";
+import Plantilla2noticias from "./plantilla2noticias";
+import { Noticia } from "./noticiaPrincipal";
+import { Noticias, Banners } from "./configuracion";
+
+
+const malditoClubEstandar = () => {
+
+  console.log(Banners[0]); 
+  return (
+    // [#A30000]
+    <div className="min-h-screen bg-black "> 
+
+      <HeaderAnimado />
+      <div className="relative min-h-screen bg-black">
+          {/* Imagen superior */}
+        <div 
+          className="absolute inset-0 opacity-50 
+                    bg-repeat-y bg-center"
+          style={{ 
+            backgroundImage: `url('/assets/RS-Texture-01.jpg')`,
+            backgroundSize: 'contain'  /* o 'contain' o un valor específico */
+          }}
+        />
+        
+        <div className="relative z-10 text-white">
+          <div className="md:w-full md:h-[20vh]"></div>
+          <Body/>
+          <div className="md:w-full md:h-[10vh]"></div>
+          
+          <Banner banner={Banners[0]} />
+          <div className="md:w-full md:h-[10vh]"></div>
+          <Plantilla2noticias/>
+          <div className="md:w-full md:h-[10vh]"></div>
+          <Banner banner={Banners[1]} />
+          <Noticia noticia={Noticias[7]} />
+          <Noticia noticia={Noticias[8]} />
+          <Noticia noticia={Noticias[9]} />
+          <Noticia noticia={Noticias[10]} />
+          <div className="md:w-full md:h-[30vh]"></div>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+
+export default malditoClubEstandar;
